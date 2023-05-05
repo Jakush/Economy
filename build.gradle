@@ -49,3 +49,13 @@ processResources {
         expand props
     }
 }
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = group
+            version = version
+            from components.java
+        }
+    }
+}
