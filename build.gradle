@@ -1,9 +1,18 @@
 plugins {
     id 'java'
+    id 'maven-publish'
 }
 
 group = 'me.retamrovec'
 version = '1.0-SNAPSHOT'
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+        }
+    }
+}
 
 repositories {
     mavenCentral()
@@ -47,15 +56,5 @@ processResources {
     filteringCharset 'UTF-8'
     filesMatching('plugin.yml') {
         expand props
-    }
-}
-
-publishing {
-    publications {
-        maven(MavenPublication) {
-            groupId = group
-            version = version
-            from components.java
-        }
     }
 }
