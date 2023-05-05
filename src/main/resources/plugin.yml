@@ -1,0 +1,4 @@
+name: Economy
+version: '${version}'
+main: me.retamrovec.economy.Economy
+api-version: 1.19
