@@ -1,7 +1,6 @@
 package me.retamrovec.economy.listeners;
 
 import me.retamrovec.economy.api.EconomyAPI;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -18,13 +17,11 @@ public class ConnectListener implements Listener {
 
 	@EventHandler
 	public void onJoin(@NotNull PlayerJoinEvent e) {
-		Player player = e.getPlayer();
-		api.addPlayer(player.getUniqueId(), api.loadPlayerAccountAsync(player));
+		api.addPlayer(e.getPlayer());
 	}
 
 	@EventHandler
 	public void onLeave(@NotNull PlayerQuitEvent e) {
-		Player player = e.getPlayer();
-		api.removePlayer(player.getUniqueId());
+		api.removePlayer(e.getPlayer(), true);
 	}
 }
