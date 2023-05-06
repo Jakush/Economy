@@ -13,8 +13,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
 
 @SuppressWarnings("deprecated")
 public class Vault implements Economy {
@@ -312,12 +310,11 @@ public class Vault implements Economy {
 			if (rs.next()) return false;
 			try (PreparedStatement ps1 = api.getDatabase().getConnection().prepareStatement("INSERT INTO Econ VALUES (?,?);")) {
 				ps1.setString(1, player.getName());
-				ps1.setDouble(1, 0);
+				ps1.setDouble(2, 0);
 				ps1.executeUpdate();
 			} catch (SQLException e1) {
 				e1.printStackTrace();
 			}
-			api.addPlayer(player.getUniqueId());
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
