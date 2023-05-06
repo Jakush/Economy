@@ -176,7 +176,7 @@ public class Vault implements Economy {
 	public EconomyResponse withdrawPlayer(@NotNull OfflinePlayer player, double amount) {
 		EconomyPlayer economyPlayer = api.getPlayer(player.getUniqueId());
 		if (economyPlayer == null) return new EconomyResponse(amount, 0, EconomyResponse.ResponseType.FAILURE, "null");
-		try (PreparedStatement ps = api.getDatabase().prepareStatement("UPDATE Econ SET balance = balance + (?) WHERE player = (?);")) {
+		try (PreparedStatement ps = api.getDatabase().prepareStatement("UPDATE Econ SET balance = balance - (?) WHERE player = (?);")) {
 			ps.setDouble(1, amount);
 			ps.setString(2, economyPlayer.getPlayerName());
 			ps.executeUpdate();
@@ -207,7 +207,7 @@ public class Vault implements Economy {
 	public EconomyResponse depositPlayer(@NotNull OfflinePlayer player, double amount) {
 		EconomyPlayer economyPlayer = api.getPlayer(player.getUniqueId());
 		if (economyPlayer == null) return new EconomyResponse(amount, 0, EconomyResponse.ResponseType.FAILURE, "null");
-		try (PreparedStatement ps = api.getDatabase().prepareStatement("UPDATE Econ SET balance = balance - (?) WHERE player = (?);")) {
+		try (PreparedStatement ps = api.getDatabase().prepareStatement("UPDATE Econ SET balance = balance + (?) WHERE player = (?);")) {
 			ps.setDouble(1, amount);
 			ps.setString(2, economyPlayer.getPlayerName());
 			ps.executeUpdate();

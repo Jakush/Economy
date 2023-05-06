@@ -1,6 +1,7 @@
 package me.retamrovec.economy.api;
 
 import me.retamrovec.economy.database.Database;
+import me.retamrovec.economy.modules.EconomyInterfaceAPI;
 import me.retamrovec.economy.modules.EconomyPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -14,7 +15,7 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class EconomyAPI {
+public class EconomyAPI implements EconomyInterfaceAPI {
 
 	private final Vault vault;
 	private final HashMap<UUID, EconomyPlayer> economyPlayers;
@@ -28,18 +29,22 @@ public class EconomyAPI {
 		this.plugin = plugin;
 	}
 
+	@Override
 	public void addPlayer(UUID uuid, EconomyPlayer player) {
 		economyPlayers.put(uuid, player);
 	}
 
+	@Override
 	public void removePlayer(UUID uuid) {
 		economyPlayers.remove(uuid);
 	}
 
+	@Override
 	public EconomyPlayer getPlayer(UUID uuid) {
 		return economyPlayers.get(uuid);
 	}
 
+	@Override
 	public Database getDatabase() {
 		return database;
 	}
@@ -51,6 +56,7 @@ public class EconomyAPI {
 	async means, it will be run on another thread, and it won't block the main thread (game one)
 	*/
 
+	@Override
 	public EconomyPlayer loadPlayerAccountAsync(OfflinePlayer player) {
 		AtomicReference<EconomyPlayer> playerAtomicReference = new AtomicReference<>();
 		Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
@@ -76,18 +82,21 @@ public class EconomyAPI {
 		return playerAtomicReference.get();
 	}
 
+	@Override
 	public boolean createPlayerAccountAsync(OfflinePlayer player) {
 		AtomicBoolean state = new AtomicBoolean(false);
 		Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> state.set(vault.createPlayerAccount(player)));
 		return state.get();
 	}
 
+	@Override
 	public boolean depositPlayerAsync(OfflinePlayer player, Double amount) {
 		AtomicBoolean state = new AtomicBoolean(false);
 		Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> state.set(vault.depositPlayer(player, amount).transactionSuccess()));
 		return state.get();
 	}
 
+	@Override
 	public boolean withdrawPlayerAsync(OfflinePlayer player, Double amount) {
 		AtomicBoolean state = new AtomicBoolean(false);
 		Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> state.set(vault.withdrawPlayer(player, amount).transactionSuccess()));
