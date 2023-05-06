@@ -341,32 +341,4 @@ public class Vault implements Economy {
 	public boolean createPlayerAccount(@NotNull OfflinePlayer player, String worldName) {
 		return createPlayerAccount(player);
 	}
-
-
-
-	/*
-	ASync methods -
-	these methods should be used instead of normal ones (sync)
-	async means, it will be run on another thread, and it won't block the main thread (game one)
-	*/
-
-
-
-	public boolean createPlayerAccountAsync(OfflinePlayer player) {
-		AtomicBoolean state = new AtomicBoolean(false);
-		Bukkit.getScheduler().runTaskAsynchronously(api.getPlugin(), () -> state.set(createPlayerAccount(player)));
-		return state.get();
-	}
-
-	public EconomyResponse depositPlayerAsync(OfflinePlayer player, Double amount) {
-		AtomicReference<EconomyResponse> state = new AtomicReference<>();
-		Bukkit.getScheduler().runTaskAsynchronously(api.getPlugin(), () -> state.set(depositPlayer(player, amount)));
-		return state.get();
-	}
-
-	public EconomyResponse withdrawPlayerAsync(OfflinePlayer player, Double amount) {
-		AtomicReference<EconomyResponse> state = new AtomicReference<>();
-		Bukkit.getScheduler().runTaskAsynchronously(api.getPlugin(), () -> state.set(withdrawPlayer(player, amount)));
-		return state.get();
-	}
 }

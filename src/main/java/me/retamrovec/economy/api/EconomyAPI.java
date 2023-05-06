@@ -2,12 +2,15 @@ package me.retamrovec.economy.api;
 
 import me.retamrovec.economy.database.Database;
 import me.retamrovec.economy.modules.EconomyPlayer;
+import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.HashMap;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class EconomyAPI {
 
@@ -40,5 +43,30 @@ public class EconomyAPI {
 
 	public JavaPlugin getPlugin() {
 		return plugin;
+	}
+
+
+	/*
+	ASync methods -
+	these methods should be used instead of normal ones (sync)
+	async means, it will be run on another thread, and it won't block the main thread (game one)
+	*/
+
+	public boolean createPlayerAccountAsync(OfflinePlayer player) {
+		AtomicBoolean state = new AtomicBoolean(false);
+		Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> state.set(vault.createPlayerAccount(player)));
+		return state.get();
+	}
+
+	public EconomyResponse depositPlayerAsync(OfflinePlayer player, Double amount) {
+		AtomicReference<EconomyResponse> state = new AtomicReference<>();
+		Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> state.set(vault.depositPlayer(player, amount)));
+		return state.get();
+	}
+
+	public EconomyResponse withdrawPlayerAsync(OfflinePlayer player, Double amount) {
+		AtomicReference<EconomyResponse> state = new AtomicReference<>();
+		Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> state.set(vault.withdrawPlayer(player, amount)));
+		return state.get();
 	}
 }
