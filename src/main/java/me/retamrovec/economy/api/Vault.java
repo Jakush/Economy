@@ -176,16 +176,8 @@ public class Vault implements Economy {
 	public EconomyResponse withdrawPlayer(@NotNull OfflinePlayer player, double amount) {
 		EconomyPlayer economyPlayer = api.getPlayer(player.getUniqueId());
 		if (economyPlayer == null) return new EconomyResponse(amount, 0, EconomyResponse.ResponseType.FAILURE, "null");
-		try (PreparedStatement ps = api.getDatabase().prepareStatement("UPDATE Econ SET balance = balance - (?) WHERE player = (?);")) {
-			ps.setDouble(1, amount);
-			ps.setString(2, economyPlayer.getPlayerName());
-			ps.executeUpdate();
-			economyPlayer.setBalance(economyPlayer.getBalance() + amount);
-			return new EconomyResponse(amount, economyPlayer.getBalance(), EconomyResponse.ResponseType.SUCCESS, "success");
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return new EconomyResponse(amount, economyPlayer.getBalance(), EconomyResponse.ResponseType.FAILURE, "exception in database operation");
-		}
+		economyPlayer.setBalance(economyPlayer.getBalance() - amount);
+		return new EconomyResponse(amount, economyPlayer.getBalance(), EconomyResponse.ResponseType.SUCCESS, "success");
 	}
 
 	@Override
@@ -207,16 +199,8 @@ public class Vault implements Economy {
 	public EconomyResponse depositPlayer(@NotNull OfflinePlayer player, double amount) {
 		EconomyPlayer economyPlayer = api.getPlayer(player.getUniqueId());
 		if (economyPlayer == null) return new EconomyResponse(amount, 0, EconomyResponse.ResponseType.FAILURE, "null");
-		try (PreparedStatement ps = api.getDatabase().prepareStatement("UPDATE Econ SET balance = balance + (?) WHERE player = (?);")) {
-			ps.setDouble(1, amount);
-			ps.setString(2, economyPlayer.getPlayerName());
-			ps.executeUpdate();
-			economyPlayer.setBalance(economyPlayer.getBalance() - amount);
-			return new EconomyResponse(amount, economyPlayer.getBalance(), EconomyResponse.ResponseType.SUCCESS, "success");
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return new EconomyResponse(amount, economyPlayer.getBalance(), EconomyResponse.ResponseType.FAILURE, "exception in database operation");
-		}
+		economyPlayer.setBalance(economyPlayer.getBalance() + amount);
+		return new EconomyResponse(amount, economyPlayer.getBalance(), EconomyResponse.ResponseType.SUCCESS, "success");
 	}
 
 	@Override
