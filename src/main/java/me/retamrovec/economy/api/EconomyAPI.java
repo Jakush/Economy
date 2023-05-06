@@ -58,15 +58,15 @@ public class EconomyAPI {
 		return state.get();
 	}
 
-	public EconomyResponse depositPlayerAsync(OfflinePlayer player, Double amount) {
-		AtomicReference<EconomyResponse> state = new AtomicReference<>();
-		Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> state.set(vault.depositPlayer(player, amount)));
+	public boolean depositPlayerAsync(OfflinePlayer player, Double amount) {
+		AtomicBoolean state = new AtomicBoolean(false);
+		Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> state.set(vault.depositPlayer(player, amount).transactionSuccess()));
 		return state.get();
 	}
 
-	public EconomyResponse withdrawPlayerAsync(OfflinePlayer player, Double amount) {
-		AtomicReference<EconomyResponse> state = new AtomicReference<>();
-		Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> state.set(vault.withdrawPlayer(player, amount)));
+	public boolean withdrawPlayerAsync(OfflinePlayer player, Double amount) {
+		AtomicBoolean state = new AtomicBoolean(false);
+		Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> state.set(vault.withdrawPlayer(player, amount).transactionSuccess()));
 		return state.get();
 	}
 }
