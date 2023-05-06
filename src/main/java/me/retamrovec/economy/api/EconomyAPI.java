@@ -119,6 +119,14 @@ public class EconomyAPI implements EconomyInterfaceAPI {
 		}
 	}
 
+	/**
+	 * Deposits amount from player
+	 * <h4>DON'T EVER USE THIS METHOD AS YOU SHOULDN'T MANIPULATE WITH DATABASE WHILE RUNNING SERVER BECAUSE OF PERFORMANCE ISSUES </h4>
+	 *
+	 * @param player Player's account
+	 * @param amount Amount to deposit
+	 * @return Returns its success
+	 */
 	@Override
 	public boolean depositPlayerAsync(OfflinePlayer player, Double amount) {
 		CompletableFuture<Boolean> completableFuture = CompletableFuture.supplyAsync(() -> vault.depositPlayer(player, amount).transactionSuccess());
@@ -129,6 +137,14 @@ public class EconomyAPI implements EconomyInterfaceAPI {
 		}
 	}
 
+	/**
+	 * Withdraw amount from player
+	 * <h4>DON'T EVER USE THIS METHOD AS YOU SHOULDN'T MANIPULATE WITH DATABASE WHILE RUNNING SERVER BECAUSE OF PERFORMANCE ISSUES </h4>
+	 *
+	 * @param player Player's account
+	 * @param amount Amount to withdraw
+	 * @return Returns its success
+	 */
 	@Override
 	public boolean withdrawPlayerAsync(OfflinePlayer player, Double amount) {
 		CompletableFuture<Boolean> completableFuture = CompletableFuture.supplyAsync(() -> vault.withdrawPlayer(player, amount).transactionSuccess());

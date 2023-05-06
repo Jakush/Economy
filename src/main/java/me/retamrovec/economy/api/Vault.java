@@ -175,9 +175,9 @@ public class Vault implements Economy {
 	@Override
 	public EconomyResponse withdrawPlayer(@NotNull OfflinePlayer player, double amount) {
 		EconomyPlayer economyPlayer = api.getPlayer(player.getUniqueId());
-		if (economyPlayer == null) return new EconomyResponse(amount, 0, EconomyResponse.ResponseType.FAILURE, "null");
+		if (economyPlayer == null) return new EconomyResponse(0, amount, EconomyResponse.ResponseType.FAILURE, "failure");
 		economyPlayer.setBalance(economyPlayer.getBalance() - amount);
-		return new EconomyResponse(amount, economyPlayer.getBalance(), EconomyResponse.ResponseType.SUCCESS, "success");
+		return new EconomyResponse(economyPlayer.getBalance(), amount, EconomyResponse.ResponseType.SUCCESS, "success");
 	}
 
 	@Override
@@ -198,9 +198,9 @@ public class Vault implements Economy {
 	@Override
 	public EconomyResponse depositPlayer(@NotNull OfflinePlayer player, double amount) {
 		EconomyPlayer economyPlayer = api.getPlayer(player.getUniqueId());
-		if (economyPlayer == null) return new EconomyResponse(amount, 0, EconomyResponse.ResponseType.FAILURE, "null");
+		if (economyPlayer == null) return new EconomyResponse(0, amount, EconomyResponse.ResponseType.FAILURE, "failure");
 		economyPlayer.setBalance(economyPlayer.getBalance() + amount);
-		return new EconomyResponse(amount, economyPlayer.getBalance(), EconomyResponse.ResponseType.SUCCESS, "success");
+		return new EconomyResponse(economyPlayer.getBalance(), amount, EconomyResponse.ResponseType.SUCCESS, "success");
 	}
 
 	@Override
